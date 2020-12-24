@@ -1,0 +1,52 @@
+plugins {
+    id "org.springframework.boot" version "${springBootVersion}"
+    id "io.spring.dependency-management" version "${springDependencyManagementPluginVersion}"
+    id "io.freefair.lombok" version "${lombokPluginVersion}"
+    id "java-library"
+    id 'distribution'
+
+}
+
+distributions {
+    main {
+        distributionBaseName = 'app'
+        contents {
+            from '.'
+        }
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+        mavenContent { snapshotsOnly() }
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "io.spring.initializr:initializr-bom:${springInitializrVersion}"
+    }
+}
+
+springBoot {
+    buildInfo()
+    mainClass = "org.apereo.cas.CasOverlayInitializrApplication"
+}
+
+dependencies {
+
+    implementation "org.springframework.boot:spring-boot-starter-web"
+
+    implementation "io.spring.initializr:initializr-web"
+    implementation "io.spring.initializr:initializr-actuator"
+    implementation "io.spring.initializr:initializr-generator-spring"
+    implementation "io.spring.initializr:initializr-generator"
+    implementation "io.spring.initializr:initializr-generator"
+
+
+    runtime "org.springframework.boot:spring-boot-starter-tomcat"
+}
